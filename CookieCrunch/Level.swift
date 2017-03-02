@@ -270,9 +270,30 @@ class Level {
   // MARK: - Remove Matches
   
   func removeMatches() -> Set<Chain> {
-    fatalError()
+    
+    let horizontalChains = detectHorizontalMatches()
+    let verticalChains = detectVerticalMatches()
+    
+    removeCookies(chains: horizontalChains)
+    removeCookies(chains: verticalChains)
+    
+    return horizontalChains.union(verticalChains)
+    
   }
   
+  private func removeCookies(chains: Set<Chain>) {
+    
+    for chain in chains {
+      
+      for cookie in chain.cookies {
+        
+        cookies[cookie.column, cookie.row] = nil
+        
+      }
+      
+    }
+    
+  }
   
   private func detectHorizontalMatches() -> Set<Chain> {
     

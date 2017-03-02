@@ -342,6 +342,41 @@ class GameScene: SKScene {
     
   }
   
+  // MARK: Animate Falling Cookies
   
+  func animateFallingCookies(columns: [[Cookie]], completion: @escaping () -> ()) {
+    
+    var longestDuration: TimeInterval = 0
+    
+    for array in columns {
+      
+      for (idx, cookie) in array.enumerated() {
+        
+        let newPosition = pointFor(column: cookie.column, row: cookie.row)
+        
+        let delay = 0.05 + 0.15 * TimeInterval(idx)
+        
+        let sprite = cookie.sprite!
+        
+        let duration = TimeInterval(((sprite.position.y - newPosition.y) / tileHeight) * 0.1)
+        
+        longestDuration = max(longestDuration, duration + delay)
+        
+        let moveAction = SKAction.move(to: newPosition, duration: duration)
+        
+        moveAction.timingMode = .easeOut
+        
+        sprite.run(SKAction.sequence([
+          
+          SKAction.wait(forDuration: delay),
+          SKAction.group([moveAction, fallingCookieSound])]))
+        
+      }
+      
+    }
+    
+    run(SKAction.wait(forDuration: longestDuration), completion: completion)
+    
+  }
   
 }

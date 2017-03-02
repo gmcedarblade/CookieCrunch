@@ -270,9 +270,30 @@ class Level {
   // MARK: - Remove Matches
   
   func removeMatches() -> Set<Chain> {
-    fatalError()
+    
+    let horizontalChains = detectHorizontalMatches()
+    let verticalChains = detectVerticalMatches()
+    
+    removeCookies(chains: horizontalChains)
+    removeCookies(chains: verticalChains)
+    
+    return horizontalChains.union(verticalChains)
+    
   }
   
+  private func removeCookies(chains: Set<Chain>) {
+    
+    for chain in chains {
+      
+      for cookie in chain.cookies {
+        
+        cookies[cookie.column, cookie.row] = nil
+        
+      }
+      
+    }
+    
+  }
   
   private func detectHorizontalMatches() -> Set<Chain> {
     
@@ -289,7 +310,7 @@ class Level {
           let matchType = cookie.cookieType
           
           if cookies[column + 1, row]?.cookieType == matchType
-            && cookies[column + 1, row]?.cookieType == matchType {
+            && cookies[column + 2, row]?.cookieType == matchType {
             
             let chain = Chain(chainType: .horizontal)
             
@@ -358,6 +379,52 @@ class Level {
     
     return set
     
+  }
+  
+  
+  func fillCookies() -> [[Cookie]] {
+    
+    var columns = [[Cookie]]()
+    
+    for column in 0..<numColumns {
+      
+      var array = [Cookie]()
+      
+      for row in 0..<numRows {
+        
+        if tiles[column, row] != nil && cookies[column, row] == nil {
+          
+          for lookup in (row + 1)..<numRows {
+            
+            if let cookie = cookies[column, lookup] {
+              
+              cookies[column, lookup] = nil
+              
+              cookies[column, row] = cookie
+              
+              cookie.row = row
+              
+              array.append(cookie)
+              
+              break
+              
+            }
+            
+          }
+          
+        }
+        
+      }
+      
+      if !array.isEmpty {
+        
+        columns.append(array)
+        
+      }
+      
+    }
+    
+    return columns
   }
   
   

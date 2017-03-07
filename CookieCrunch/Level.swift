@@ -131,11 +131,21 @@ class Level {
     
     for chain in chains {
       
-      chain.score = 60 * (chain.length - 2)
+      chain.score = 60 * (chain.length - 2) * comboMultiplier
+      
+      comboMultiplier += 1
       
     }
     
   }
+  
+  private var comboMultiplier = 0
+  
+  func resetComboMultiplier() {
+    comboMultiplier = 1
+  }
+  
+  
   
   // MARK: - Possible Swaps
   

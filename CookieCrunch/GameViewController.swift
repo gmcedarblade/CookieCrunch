@@ -14,6 +14,9 @@ class GameViewController: UIViewController {
   var scene: GameScene!
   var level: Level!
   
+  var movesLeft = 0
+  var score = 0
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     

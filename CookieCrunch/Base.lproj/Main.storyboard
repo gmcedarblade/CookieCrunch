@@ -90,17 +90,43 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4Xz-cM-Hcy" userLabel="Game Over Panel">
+                                <rect key="frame" x="0.0" y="220.5" width="375" height="225"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="225" id="pgV-hG-dFF"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="91g-Qo-A92">
+                                <rect key="frame" x="137" y="611" width="100" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="v33-IC-b13"/>
+                                    <constraint firstAttribute="height" constant="36" id="veH-8j-3DZ"/>
+                                </constraints>
+                                <state key="normal" title="Shuffle" backgroundImage="Button">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="shuffleButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="m0y-WE-S39"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="PBV-v7-GHL" firstAttribute="leading" secondItem="3se-qz-xqx" secondAttribute="leadingMargin" constant="8" id="2YN-O4-FQG"/>
+                            <constraint firstAttribute="trailing" secondItem="4Xz-cM-Hcy" secondAttribute="trailing" id="32d-Ss-X6b"/>
+                            <constraint firstItem="91g-Qo-A92" firstAttribute="centerX" secondItem="3se-qz-xqx" secondAttribute="centerX" id="RYM-iP-yVw"/>
                             <constraint firstAttribute="trailingMargin" secondItem="PBV-v7-GHL" secondAttribute="trailing" constant="8" id="SRb-We-OrC"/>
+                            <constraint firstItem="4Xz-cM-Hcy" firstAttribute="leading" secondItem="3se-qz-xqx" secondAttribute="leading" id="UCd-uH-LYQ"/>
                             <constraint firstItem="PBV-v7-GHL" firstAttribute="top" secondItem="8aa-yV-Osq" secondAttribute="bottom" constant="20" id="a3C-hy-kMb"/>
+                            <constraint firstItem="qHh-Mt-9TT" firstAttribute="top" secondItem="91g-Qo-A92" secondAttribute="bottom" constant="20" id="iWN-DY-96Y"/>
+                            <constraint firstItem="4Xz-cM-Hcy" firstAttribute="centerY" secondItem="3se-qz-xqx" secondAttribute="centerY" id="sdD-mC-8g1"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="gameOverPanel" destination="4Xz-cM-Hcy" id="0qP-Sr-Kum"/>
                         <outlet property="movesLabel" destination="TLw-mc-zdv" id="fCd-b5-QEd"/>
                         <outlet property="scoreLabel" destination="YS0-3X-baq" id="jT5-cS-vwj"/>
+                        <outlet property="shuffleButton" destination="91g-Qo-A92" id="D6p-Qa-kBs"/>
                         <outlet property="targetLabel" destination="bHh-VA-GGB" id="Uut-tX-dH6"/>
                     </connections>
                 </viewController>
@@ -109,4 +135,7 @@
             <point key="canvasLocation" x="116" y="123.68815592203899"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Button" width="100" height="36"/>
+    </resources>
 </document>

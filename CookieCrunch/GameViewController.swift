@@ -20,12 +20,21 @@ class GameViewController: UIViewController {
   
   @IBOutlet weak var scoreLabel: UILabel!
   
+  @IBOutlet weak var gameOverPanel: UIImageView!
+  
+  var tapGestureRecognizer: UITapGestureRecognizer!
+  
+  @IBOutlet weak var shuffleButton: UIButton!
+  
   
   var movesLeft = 0
   var score = 0
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    // Hide gameOverPanel
+    gameOverPanel.isHidden = true
     
     // Configure the view.
     let skView = view as! SKView
@@ -54,6 +63,13 @@ class GameViewController: UIViewController {
     updateLabels()
     
     level.resetComboMultiplier()
+    
+    scene.animateBeginGame {
+    
+      self.shuffleButton.isHidden = false
+    
+    }
+    
     // shuffling
     shuffle()
     
@@ -61,6 +77,7 @@ class GameViewController: UIViewController {
   
   func shuffle() {
     
+    scene.removeAllCookieSprites()
     let newCookies = level.shuffle()
     scene.addSprites(for: newCookies)
     
@@ -157,6 +174,18 @@ class GameViewController: UIViewController {
     movesLeft -= 1
     updateLabels()
     
+    if score >= level.targetScore {
+      
+      gameOverPanel.image = UIImage(named: "LevelComplete")
+      showGameOver()
+      
+    } else if movesLeft == 0 {
+      
+      gameOverPanel.image = UIImage(named: "GameOver")
+      showGameOver()
+      
+    }
+    
   }
   
   func updateLabels() {
@@ -166,5 +195,46 @@ class GameViewController: UIViewController {
     scoreLabel.text = String(format: "%ld", score)
     
   }
+  
+  func showGameOver() {
+    
+    gameOverPanel.isHidden = false
+    
+    scene.isUserInteractionEnabled = false
+    
+    shuffleButton.isHidden = true
+    
+    scene.animateGameOver {
+      
+      self.tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.hideGameOver))
+    
+      self.view.addGestureRecognizer(self.tapGestureRecognizer)
+      
+    }
+    
+    
+  }
+  
+  func hideGameOver() {
+    
+    view.removeGestureRecognizer(tapGestureRecognizer)
+    tapGestureRecognizer = nil
+    
+    gameOverPanel.isHidden = true
+    
+    scene.isUserInteractionEnabled = true
+    
+    beginGame()
+    
+  }
+  
+
+  @IBAction func shuffleButtonPressed(_ sender: Any) {
+    
+    shuffle()
+    decrementMoves()
+    
+  }
+  
   
 }

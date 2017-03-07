@@ -47,6 +47,8 @@ class GameScene: SKScene {
     
     super.init(size: size)
     
+    let _ = SKLabelNode(fontNamed: "GillSans-BoldItalic")
+    
     anchorPoint = CGPoint(x: 0.5, y: 0.5)
     
     let background = SKSpriteNode(imageNamed: "Background")
@@ -316,6 +318,8 @@ class GameScene: SKScene {
     
     for chain in chains {
       
+      animateScore(for: chain)
+      
       for cookie in chain.cookies {
         
         if let sprite = cookie.sprite {
@@ -339,6 +343,33 @@ class GameScene: SKScene {
     run(matchSound)
     
     run(SKAction.wait(forDuration: 0.3), completion: completion)
+    
+  }
+  
+  // MARK: Animate Score
+  
+  func animateScore(for chain: Chain) {
+    
+    // Find out the midpoint for the chain
+    let firstSprite = chain.firstCookie().sprite!
+    
+    let lastSprite = chain.lastCookie().sprite!
+    
+    let centerPosition = CGPoint(
+      x: (firstSprite.position.x + lastSprite.position.x) / 2,
+      y: (firstSprite.position.y + lastSprite.position.y) / 2 - 8)
+    
+    // Add a label for the score that slowly floats up
+    let scoreLabel = SKLabelNode(fontNamed: "GillSans-BoldItalic")
+    scoreLabel.fontSize = 16
+    scoreLabel.text = String(format: "%ld", chain.score)
+    scoreLabel.position = centerPosition
+    scoreLabel.zPosition = 300
+    cookiesLayer.addChild(scoreLabel)
+    
+    let moveAction = SKAction.move(by: CGVector(dx: 0, dy: 3), duration: 0.7)
+    moveAction.timingMode = .easeOut
+    scoreLabel.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
     
   }
   

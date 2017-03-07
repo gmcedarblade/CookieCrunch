@@ -13,6 +13,9 @@ let numRows = 9
 
 class Level {
   
+  var targetScore = 0
+  var maximumMoves = 0
+  
   fileprivate var cookies = Array2D<Cookie>(columns: numColumns, rows: numRows)
   
   private var tiles = Array2D<Tile>(columns: numColumns, rows: numRows)
@@ -40,6 +43,9 @@ class Level {
       }
       
     }
+    
+    targetScore = dictionary["targetScore"] as! Int
+    maximumMoves = dictionary["moves"] as! Int
     
   }
   
@@ -116,6 +122,30 @@ class Level {
     return set
     
   }
+  
+  // MARK: - Scoring
+  
+  private func calculateScores(for chains: Set<Chain>) {
+    
+    // 3-chain is 60 pts, 4-chain is 120, 5-chain is 180, and so on
+    
+    for chain in chains {
+      
+      chain.score = 60 * (chain.length - 2) * comboMultiplier
+      
+      comboMultiplier += 1
+      
+    }
+    
+  }
+  
+  private var comboMultiplier = 0
+  
+  func resetComboMultiplier() {
+    comboMultiplier = 1
+  }
+  
+  
   
   // MARK: - Possible Swaps
   
@@ -277,6 +307,9 @@ class Level {
     removeCookies(chains: horizontalChains)
     removeCookies(chains: verticalChains)
     
+    calculateScores(for: horizontalChains)
+    calculateScores(for: verticalChains)
+    
     return horizontalChains.union(verticalChains)
     
   }
@@ -427,5 +460,54 @@ class Level {
     return columns
   }
   
+  func topUpCookies() -> [[Cookie]] {
+    
+    var columns = [[Cookie]]()
+    
+    var cookieType: CookieType = .unknown
+    
+    for column in 0..<numColumns {
+      
+      var array = [Cookie]()
+      
+      var row = numRows - 1
+      
+      while row >= 0 && cookies[column, row] == nil {
+        
+        if tiles[column, row] != nil {
+          
+          var newCookieType: CookieType
+          
+          repeat {
+            
+            newCookieType = CookieType.random()
+            
+          } while newCookieType == cookieType
+          
+          cookieType = newCookieType
+          
+          let cookie = Cookie(column: column, row: row, cookieType: cookieType)
+          
+          cookies[column, row] = cookie
+          
+          array.append(cookie)
+          
+        }
+        
+        row -= 1
+        
+      }
+      
+      if !array.isEmpty {
+        
+        columns.append(array)
+        
+      }
+      
+    }
+    
+    return columns
+    
+  }
   
 }

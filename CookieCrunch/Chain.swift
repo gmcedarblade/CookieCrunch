@@ -13,6 +13,8 @@ class Chain: CustomStringConvertible, Hashable {
   
   var cookies = [Cookie]()
   
+  var score = 0
+  
   enum ChainType: CustomStringConvertible {
     
     case horizontal

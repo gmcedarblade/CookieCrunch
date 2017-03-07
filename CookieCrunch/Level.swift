@@ -13,6 +13,9 @@ let numRows = 9
 
 class Level {
   
+  var targetScore = 0
+  var maximumMoves = 0
+  
   fileprivate var cookies = Array2D<Cookie>(columns: numColumns, rows: numRows)
   
   private var tiles = Array2D<Tile>(columns: numColumns, rows: numRows)
@@ -40,6 +43,9 @@ class Level {
       }
       
     }
+    
+    targetScore = dictionary["targetScore"] as! Int
+    maximumMoves = dictionary["moves"] as! Int
     
   }
   
@@ -114,6 +120,20 @@ class Level {
     }
     
     return set
+    
+  }
+  
+  // MARK: - Scoring
+  
+  private func calculateScores(for chains: Set<Chain>) {
+    
+    // 3-chain is 60 pts, 4-chain is 120, 5-chain is 180, and so on
+    
+    for chain in chains {
+      
+      chain.score = 60 * (chain.length - 2)
+      
+    }
     
   }
   
@@ -276,6 +296,9 @@ class Level {
     
     removeCookies(chains: horizontalChains)
     removeCookies(chains: verticalChains)
+    
+    calculateScores(for: horizontalChains)
+    calculateScores(for: verticalChains)
     
     return horizontalChains.union(verticalChains)
     

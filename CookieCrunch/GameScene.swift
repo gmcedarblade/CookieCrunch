@@ -18,7 +18,9 @@ class GameScene: SKScene {
   let gameLayer = SKNode()
   let cookiesLayer = SKNode()
   let tilesLayer = SKNode()
-
+  let cropLayer = SKCropNode()
+  let maskLayer = SKNode()
+  
   private var swipeFromColumn: Int?
   private var swipeFromRow: Int?
   
@@ -67,12 +69,17 @@ class GameScene: SKScene {
     tilesLayer.position = layerPosition
     
     gameLayer.addChild(tilesLayer)
-    gameLayer.addChild(cookiesLayer)
+    cropLayer.addChild(cookiesLayer)
     
     gameLayer.isHidden = true
     
     swipeFromColumn = nil
     swipeFromRow = nil
+    
+    gameLayer.addChild(cropLayer)
+    
+    maskLayer.position = layerPosition
+    cropLayer.maskNode = maskLayer
     
   }
   
@@ -107,9 +114,44 @@ class GameScene: SKScene {
         if level.tileAt(column: column, row: row) != nil {
           
           // create sprite for the tile
-          let tileNode = SKSpriteNode(imageNamed: "Tile")
+          let tileNode = SKSpriteNode(imageNamed: "MaskTile")
           tileNode.size = CGSize(width: tileWidth, height: tileHeight)
           tileNode.position = pointFor(column: column, row: row)
+          maskLayer.addChild(tileNode)
+          
+        }
+        
+      }
+      
+    }
+    
+    for row in 0...numRows {
+      
+      for column in 0...numColumns {
+        
+        let topLeft = (column > 0) && (row < numRows) && level.tileAt(column: column - 1, row: row) != nil
+        let bottomLeft = (column > 0) && (row > 0) && level.tileAt(column: column - 1, row: row - 1) != nil
+        let topRight = (column < numColumns) && (row < numRows) && level.tileAt(column: column, row: row) != nil
+        let bottomRight = (column < numColumns) && (row > 0) && level.tileAt(column: column, row: row - 1) != nil
+        
+        // The tiles are named from 0 to 15, according to the bitmask that is
+        // made by combining these four values.
+        let value =
+          Int(topLeft.hashValue) |
+            Int(topRight.hashValue) << 1 |
+            Int(bottomLeft.hashValue) << 2 |
+            Int(bottomRight.hashValue) << 3
+        
+        // Values 0 (no tiles), 6 and 9 (two opposite tiles) are not drawn.
+        if value != 0 && value != 6 && value != 9 {
+          
+          let name = String(format: "Tile_%ld", value)
+          let tileNode = SKSpriteNode(imageNamed: name)
+          tileNode.size = CGSize(width: tileWidth, height: tileHeight)
+          var point = pointFor(column: column, row: row)
+          point.x -= tileWidth/2
+          point.y -= tileHeight/2
+          tileNode.position = point
           tilesLayer.addChild(tileNode)
           
         }

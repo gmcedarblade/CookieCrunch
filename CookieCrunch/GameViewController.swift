@@ -30,6 +30,7 @@ class GameViewController: UIViewController {
   
   var movesLeft = 0
   var score = 0
+  var currentLevelNum = 1
   
   lazy var backgroundMusic: AVAudioPlayer? = {
     guard let url = Bundle.main.url(forResource: "Mining by Moonlight", withExtension: "mp3") else {
@@ -50,29 +51,11 @@ class GameViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    // Hide gameOverPanel
-    gameOverPanel.isHidden = true
+    // Setup view with level 1
+    setupLevel(levelNum: currentLevelNum)
     
-    // Configure the view.
-    let skView = view as! SKView
-    skView.isMultipleTouchEnabled = false
-    
-    // Create and configure the scene.
-    scene = GameScene(size: skView.bounds.size)
-    scene.scaleMode = .aspectFill
-    
-    scene.swipeHandler = handleSwipe
-    
-    // Present the scene.
-    skView.presentScene(scene)
-    
-    level = Level(fileName: "Level_1")
-    scene.level = level
-    scene.addTiles()
-    
+    // Start the background music
     backgroundMusic?.play()
-    
-    beginGame()
   }
   
   func beginGame() {
@@ -196,6 +179,7 @@ class GameViewController: UIViewController {
     if score >= level.targetScore {
       
       gameOverPanel.image = UIImage(named: "LevelComplete")
+      currentLevelNum = currentLevelNum < numLevels ? currentLevelNum+1 : 1
       showGameOver()
       
     } else if movesLeft == 0 {
@@ -243,7 +227,7 @@ class GameViewController: UIViewController {
     
     scene.isUserInteractionEnabled = true
     
-    beginGame()
+    setupLevel(levelNum: currentLevelNum)
     
   }
   
@@ -252,6 +236,33 @@ class GameViewController: UIViewController {
     
     shuffle()
     decrementMoves()
+    
+  }
+  
+  func setupLevel(levelNum: Int) {
+    
+    let skView = view as! SKView
+    skView.isMultipleTouchEnabled = false
+    
+    // Create and configure the scene
+    scene = GameScene(size: skView.bounds.size)
+    scene.scaleMode = .aspectFill
+    
+    // Setup the level
+    level = Level(fileName: "Level_\(levelNum)")
+    scene.level = level
+    
+    scene.addTiles()
+    scene.swipeHandler = handleSwipe
+    
+    gameOverPanel.isHidden = true
+    shuffleButton.isHidden = true
+    
+    // Present the scene
+    skView.presentScene(scene)
+    
+    // Start the game
+    beginGame()
     
   }
   

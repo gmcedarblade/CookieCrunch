@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F4698C0D1E71E46700B99756 /* Grid.atlas in Resources */ = {isa = PBXBuildFile; fileRef = F4698C0C1E71E46700B99756 /* Grid.atlas */; };
 		F4E2AAB41E5CC4DD00263319 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E2AAB31E5CC4DD00263319 /* AppDelegate.swift */; };
 		F4E2AABA1E5CC4DD00263319 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E2AAB91E5CC4DD00263319 /* GameScene.swift */; };
 		F4E2AABC1E5CC4DD00263319 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E2AABB1E5CC4DD00263319 /* GameViewController.swift */; };
@@ -35,6 +36,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F4698C0C1E71E46700B99756 /* Grid.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Grid.atlas; sourceTree = "<group>"; };
 		F4E2AAB01E5CC4DD00263319 /* CookieCrunch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CookieCrunch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4E2AAB31E5CC4DD00263319 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4E2AAB91E5CC4DD00263319 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 		F4E2AAB21E5CC4DD00263319 /* CookieCrunch */ = {
 			isa = PBXGroup;
 			children = (
+				F4698C0C1E71E46700B99756 /* Grid.atlas */,
 				F4E2AACB1E5CD81900263319 /* Sprites.atlas */,
 				F4E2AAD71E5F7F5300263319 /* Levels */,
 				F4FADA191E68AE0100C2E43F /* Sounds */,
@@ -204,6 +207,7 @@
 				F4E2AABF1E5CC4DD00263319 /* Main.storyboard in Resources */,
 				F4FADA211E68AE0100C2E43F /* Drip.wav in Resources */,
 				F4E2AAE11E5F7F5300263319 /* Level_4.json in Resources */,
+				F4698C0D1E71E46700B99756 /* Grid.atlas in Resources */,
 				F4FADA221E68AE0100C2E43F /* Error.wav in Resources */,
 				F4E2AADF1E5F7F5300263319 /* Level_2.json in Resources */,
 				F4FADA251E68AE0100C2E43F /* Scrape.wav in Resources */,

@@ -8,6 +8,7 @@
 
 import UIKit
 import SpriteKit
+import AVFoundation
 
 class GameViewController: UIViewController {
   
@@ -29,6 +30,22 @@ class GameViewController: UIViewController {
   
   var movesLeft = 0
   var score = 0
+  
+  lazy var backgroundMusic: AVAudioPlayer? = {
+    guard let url = Bundle.main.url(forResource: "Mining by Moonlight", withExtension: "mp3") else {
+      return nil
+    }
+    
+    do {
+      
+      let player = try AVAudioPlayer(contentsOf: url)
+      player.numberOfLoops = -1
+      return player
+      
+    } catch {
+      return nil
+    }
+  } ()
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -52,6 +69,8 @@ class GameViewController: UIViewController {
     level = Level(fileName: "Level_1")
     scene.level = level
     scene.addTiles()
+    
+    backgroundMusic?.play()
     
     beginGame()
   }
